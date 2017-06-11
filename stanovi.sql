@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2017 at 02:29 PM
+-- Generation Time: Jun 11, 2017 at 02:12 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -27,15 +27,25 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `apartman` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `state` varchar(20) NOT NULL,
-  `city` varchar(20) NOT NULL,
-  `street` varchar(30) NOT NULL,
-  `number` int(4) NOT NULL,
-  `description` text NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city` varchar(255) DEFAULT NULL,
+  `description` longtext,
+  `name` varchar(255) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `street` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `apartman`
+--
+
+INSERT INTO `apartman` (`id`, `city`, `description`, `name`, `number`, `state`, `street`) VALUES
+(1, 'Novi Sad', '', 'jednosoban', 24, 'Srbija', 'Vojvodjanska'),
+(2, 'Kragujevac', 'Dodji i uzmi', 'jednosoban', 155, 'Srbija', 'Kragujevacka'),
+(3, 'Zagreb', 'Lip i jeftin.. par tisuca.', 'trosoban', 47, 'Hrvatska', 'Zagrebacka Arena'),
+(4, 'Bograd', 'Jako lep, NOV NOV!', 'dvosoban', 33, 'Srbija', 'Ustanicka');
 
 -- --------------------------------------------------------
 
@@ -44,15 +54,25 @@ CREATE TABLE IF NOT EXISTS `apartman` (
 --
 
 CREATE TABLE IF NOT EXISTS `apartmanisobe` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `idapartman` int(11) unsigned NOT NULL,
-  `idsoba` int(11) unsigned NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idapartman` int(11) DEFAULT NULL,
+  `idsoba` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idapartman` (`idapartman`),
-  KEY `idsoba` (`idsoba`),
-  KEY `idapartman_2` (`idapartman`),
-  KEY `idsoba_2` (`idsoba`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  KEY `FK_apartmanisobe_idapartman` (`idapartman`),
+  KEY `FK_apartmanisobe_idsoba` (`idsoba`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `apartmanisobe`
+--
+
+INSERT INTO `apartmanisobe` (`id`, `idapartman`, `idsoba`) VALUES
+(1, 3, 3),
+(2, 2, 5),
+(3, 3, 4),
+(4, 4, 2),
+(5, 4, 1),
+(6, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -61,17 +81,34 @@ CREATE TABLE IF NOT EXISTS `apartmanisobe` (
 --
 
 CREATE TABLE IF NOT EXISTS `korisnik` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `lastname` varchar(20) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`,`email`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `DTYPE` varchar(31) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `korisnik`
+--
+
+INSERT INTO `korisnik` (`id`, `DTYPE`, `email`, `lastname`, `name`, `password`, `phone`, `username`) VALUES
+(1, 'Kupac', 'mitar@gmail.com', 'Mitric', 'Mitar', 'mitar', '066/8701871', 'mitar'),
+(2, 'Kupac', 'katica@gmail.com', 'Katic', 'Katica', 'katica', '066/8701871', 'katica'),
+(3, 'Kupac', 'darinka@gmail.com', 'Darinkic', 'Darinka', 'darinka', '066/8701871', 'darinka'),
+(4, 'Kupac', 'miraleb@gmail.com', 'Miralebovic', 'Miraleb', 'miraleb', '066/8701871', 'miraleb'),
+(5, 'Kupac', 'griza@gmail.com', 'Grizic', 'Griza', 'griza', '066/8701871', 'griza'),
+(6, 'Kupac', 'vujko@gmail.com', 'Vujkovic', 'Vujko', 'vujko', '066/8701871', 'vujko'),
+(7, 'Kupac', 'zivka@gmail.com', 'Zivkic', 'Zivka', 'zivka', '066/8701871', 'zivka'),
+(8, 'Kupac', 'zlatimir@gmail.com', 'Zlatic', 'Zlatimir', 'zlatimir', '066/8701871', 'zlatimir'),
+(9, 'Kupac', 'evnoje@gmail.com', 'Evnojic', 'Evnoje', 'evnoje', '066/8701871', 'evnoje'),
+(10, 'Prodavac', 'mita@gmail.com', 'Mitic', 'Mita', 'mita', '066/8701871', 'mita'),
+(11, 'Prodavac', 'milojica@gmail.com', 'Milojevic', 'Milojica', 'milojica', '066/8701871', 'milojica'),
+(12, 'Prodavac', 'krsto@gmail.com', 'Krstajic', 'Krsto', 'krsto', '066/8701871', 'krsto');
 
 -- --------------------------------------------------------
 
@@ -80,13 +117,27 @@ CREATE TABLE IF NOT EXISTS `korisnik` (
 --
 
 CREATE TABLE IF NOT EXISTS `kupac` (
-  `idkorisnik` int(11) unsigned NOT NULL,
-  `brkartice` varchar(30) NOT NULL,
-  `idrezervacija` int(11) unsigned NOT NULL,
-  KEY `idrezervacija` (`idrezervacija`),
-  KEY `idkorisnik` (`idkorisnik`),
-  KEY `idrezervacija_2` (`idrezervacija`)
+  `id` int(11) NOT NULL,
+  `brkartice` varchar(255) DEFAULT NULL,
+  `idrezervacija` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_kupac_idrezervacija` (`idrezervacija`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `kupac`
+--
+
+INSERT INTO `kupac` (`id`, `brkartice`, `idrezervacija`) VALUES
+(1, '766663161371', NULL),
+(2, '990363161371', NULL),
+(3, '785553161371', NULL),
+(4, '275433161371', NULL),
+(5, '215363161371', NULL),
+(6, '115363161371', NULL),
+(7, '032563161371', NULL),
+(8, '634563161371', NULL),
+(9, '233363161371', NULL);
 
 -- --------------------------------------------------------
 
@@ -95,12 +146,31 @@ CREATE TABLE IF NOT EXISTS `kupac` (
 --
 
 CREATE TABLE IF NOT EXISTS `prodavac` (
-  `idkorisnik` int(11) unsigned NOT NULL,
-  `brojterminala` int(20) NOT NULL,
-  `idapartmana` int(11) unsigned DEFAULT NULL,
-  UNIQUE KEY `idkorisnik` (`idkorisnik`,`idapartmana`),
-  KEY `idkorisnik_2` (`idkorisnik`),
-  KEY `idapartmana` (`idapartmana`)
+  `id` int(11) NOT NULL,
+  `brojterminala` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `prodavac`
+--
+
+INSERT INTO `prodavac` (`id`, `brojterminala`) VALUES
+(10, 34),
+(11, 35),
+(12, 33);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prodavciapartmani`
+--
+
+CREATE TABLE IF NOT EXISTS `prodavciapartmani` (
+  `apartmanid` int(11) NOT NULL,
+  `prodavacid` int(11) NOT NULL,
+  PRIMARY KEY (`apartmanid`,`prodavacid`),
+  KEY `FK_prodavciapartmani_prodavacid` (`prodavacid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -110,12 +180,12 @@ CREATE TABLE IF NOT EXISTS `prodavac` (
 --
 
 CREATE TABLE IF NOT EXISTS `rezervacija` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `idapartmanisobe` int(10) unsigned NOT NULL,
-  `datumprijave` date NOT NULL,
-  `datumodjave` date NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `datumodjave` date DEFAULT NULL,
+  `datumprijave` date DEFAULT NULL,
+  `idapartmanisobe` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idapartmanisobe` (`idapartmanisobe`)
+  KEY `FK_rezervacija_idapartmanisobe` (`idapartmanisobe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -125,11 +195,23 @@ CREATE TABLE IF NOT EXISTS `rezervacija` (
 --
 
 CREATE TABLE IF NOT EXISTS `soba` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `brosoba` int(2) NOT NULL,
-  `opis` text NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `brosoba` int(11) DEFAULT NULL,
+  `opis` longtext,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `soba`
+--
+
+INSERT INTO `soba` (`id`, `brosoba`, `opis`) VALUES
+(1, 3, 'lepa soba za par sa decom.'),
+(2, 1, 'soba za studenta'),
+(3, 4, 'soba za celu familiju'),
+(4, 1, 'soba za jednu osobu sa kerom.'),
+(5, 2, 'soba za dva sabana.'),
+(6, 2, 'romanticna soba');
 
 --
 -- Constraints for dumped tables
@@ -139,28 +221,34 @@ CREATE TABLE IF NOT EXISTS `soba` (
 -- Constraints for table `apartmanisobe`
 --
 ALTER TABLE `apartmanisobe`
-  ADD CONSTRAINT `apartmanisobe_ibfk_1` FOREIGN KEY (`idapartman`) REFERENCES `apartman` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `apartmanisobe_ibfk_2` FOREIGN KEY (`idsoba`) REFERENCES `soba` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_apartmanisobe_idsoba` FOREIGN KEY (`idsoba`) REFERENCES `soba` (`id`),
+  ADD CONSTRAINT `FK_apartmanisobe_idapartman` FOREIGN KEY (`idapartman`) REFERENCES `apartman` (`id`);
 
 --
 -- Constraints for table `kupac`
 --
 ALTER TABLE `kupac`
-  ADD CONSTRAINT `kupac_ibfk_3` FOREIGN KEY (`idrezervacija`) REFERENCES `rezervacija` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `kupac_ibfk_2` FOREIGN KEY (`idkorisnik`) REFERENCES `korisnik` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_kupac_idrezervacija` FOREIGN KEY (`idrezervacija`) REFERENCES `rezervacija` (`id`),
+  ADD CONSTRAINT `FK_kupac_id` FOREIGN KEY (`id`) REFERENCES `korisnik` (`id`);
 
 --
 -- Constraints for table `prodavac`
 --
 ALTER TABLE `prodavac`
-  ADD CONSTRAINT `prodavac_ibfk_2` FOREIGN KEY (`idapartmana`) REFERENCES `apartman` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `prodavac_ibfk_1` FOREIGN KEY (`idkorisnik`) REFERENCES `korisnik` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_prodavac_id` FOREIGN KEY (`id`) REFERENCES `korisnik` (`id`);
+
+--
+-- Constraints for table `prodavciapartmani`
+--
+ALTER TABLE `prodavciapartmani`
+  ADD CONSTRAINT `FK_prodavciapartmani_prodavacid` FOREIGN KEY (`prodavacid`) REFERENCES `korisnik` (`id`),
+  ADD CONSTRAINT `FK_prodavciapartmani_apartmanid` FOREIGN KEY (`apartmanid`) REFERENCES `apartman` (`id`);
 
 --
 -- Constraints for table `rezervacija`
 --
 ALTER TABLE `rezervacija`
-  ADD CONSTRAINT `rezervacija_ibfk_1` FOREIGN KEY (`idapartmanisobe`) REFERENCES `apartmanisobe` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_rezervacija_idapartmanisobe` FOREIGN KEY (`idapartmanisobe`) REFERENCES `apartmanisobe` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
